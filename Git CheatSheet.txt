@@ -1,0 +1,365 @@
+# This is a Cheat sheet for some commande
+
+# The most commonly used git commands are:
+
+add			# Add file contents to the index
+bisect		# Find the change that introduced a bug by binary search
+branch		# List, create, or delete branches
+checkout	# Checkout and switch to a branch
+clone		# Clone a repository into a new directory
+commit		# Record changes to the repository
+diff		# Show changes between commits, the commit and working trees, etc
+fetch		# Download objects and refs from another repository
+grep		# Print lines matching a pattern
+init		# Create an empty git repository or reinitialize an existing one
+log			# Show commit logs
+merge		# Join two or more development histories
+mv			# Move or rename a file, a directory, or a symlink
+pull		# Fetch from and merge with another repository or a local branch
+push		# Update remote refs along with associated objects
+rebase		# Forward-port local commits to the updated upstream head
+reset		# Reset current HEAD to the specified state
+rm			# Remove files from the working tree and from the index
+show		# Show various types of objects
+status		# Show the working tree status
+tag			# Create, list, delete, or verify a tag object signed with GPG
+
+#  Show config variables
+$git config --list
+$git config -l
+$git config --list --show-origin
+$git config --get user.email
+$git config --get.regex alias
+$git config --unset --global user.email
+$git config --unset-all --local user.name
+$git config --add user.name "JellyTheFish"
+
+# look for all subdirectories
+find .		# list files in all subdirectories
+
+# list only tracked files
+git ls-files
+
+# ------------------------------- Cloing Repo -------------------------------- #
+
+# Clone and check out a specefic branch
+git clone --branch <branch-name> <url> <destination folder>
+# Clone the DevOps Master Class Repo into the current folder
+git clone https://github.com/johnthebrit/DevOpsMC.git .
+# Clone into a new subfolder auto created under current path
+git clone https://github.com/johnthebrit/DevOpsMC.git
+# You can clone a local folder the same way!
+git clone gitplay1 gitplay2
+
+# shallow clone
+git clone --depth 5 <url>
+
+# Clone and check out a specefic branch
+$git clone --single-branch --branch <branch-name> <url> <destination folder>
+$git clone --single-branch --branch hotfix https://fa5fou5@bitbucket.org/\
+	fa5fou5/tutorials.git.bitbucket.org.git ../SingleBranch
+
+# To see the differences between the two revisions of index.html, recall both full commit
+# ID names and run git diff:
+
+# ---------------------------- Staging / Committing -------------------------- #
+
+git add .		#  add all files in current directory
+git add *
+git add <file> 	#  add specefic file
+git add -p 		#  add a chunck only
+git commit -am 	#  add and commit at the same time
+
+# ---------------------------- To remove content ----------------------------- #
+
+# stage the removal (which will also delete from working)
+git rm <file>
+# to ONLY stage the remove (but not delete from working)
+git rm --cached <file>
+# Could also just delete from working then "add" all changes
+git add .
+
+# ---------------------------look at the type/content------------------------- #
+
+# look at the type
+git cat-file -t <first 7 of the hash shown for the commit>
+# look at the content
+git cat-file -p <first 7 of the hash shown for the commit>
+
+# -----------------------Difference between Stg/index/commits ---------------- #
+
+git diff # Difference between what is working to staged
+git diff --cached # Difference between staged and what is commited
+git diff --staged # Difference between staged and what is commited
+git diff <commit>..<commit> # diff between specific commits
+git diff 9da581d910c9c4ac93557ca4859e767f5caf5169
+	\ec232cddfb94e0dfd5b5855af8ded7f5eb5c90d6
+# Between working and the last commit (i.e. head)
+git diff HEAD # basically the sum of the above two
+
+# Remember the complete snapshot is stored. All diffs are generated at time of
+# command execution
+
+
+#  ------------------------ Restoring/Resetting ------------------------------ #
+
+#  There are three commands with similar names:
+#  git reset, git restore and git revert.
+#  git-revert is about making a new commit that reverts the changes made by other commits.
+#  git-restore is about restoring files in the working tree from either the index or another commit.
+#  This command does not update your branch.
+#  The command can also be used to restore files in the index from another commit.
+#  git-reset is about updating your branch, moving the tip in order to add or remove commits from the branch.
+#  This operation changes the commit history.
+#  git reset can also be used to restore the index, overlapping with git restore.
+
+So:
+
+#  To restore a file in the index to match the version in HEAD (this is the same as using git-reset)
+git restore --staged hello.c #  to Unstage
+
+#  or you can restore both the index and the working tree (this the same as using git-checkout)
+
+git restore --source=HEAD --staged --worktree hello.c
+
+# Restore to stage and working from last commit
+git restore --staged --worktree testfile.txt
+
+# or the short form which is more practical but less readable:
+
+git restore -s@ -SW hello.c
+
+# Remove all staged content. This is actually using --mixed which is default. More later
+# It does this by setting staged to match the last commit
+# It does NOT change your working dir
+# Can reset individual files
+git reset
+
+# Move back 1 but do not change staging or working. Could go back 2, 3 etc ~2, ~3
+git reset HEAD~1 --soft
+
+# Could also reset by a specific commit ID
+git reset <first x characters of commit> --soft
+
+# Would also change your working directory to match!
+git reset --hard
+
+# to also reset staging. Note as I'm not specifying a commit its resetting working to the current commit
+# --mixed is actually the default, i.e. same as git reset which we did before to reset staging!
+git reset --mixed
+
+git restore <file>... # to discard changes in working directory
+git restore --staged <file>... # to unstage
+
+# Documentation
+https://git-scm.com/docs/git# _reset_restore_and_revert
+
+# ----------------------------------- log ------------------------------------ #
+
+# The command git log yields a sequential history of the individual commits within the repository:
+$ git log
+
+# Some git log examples:
+$git log --pretty="%h - %s"
+$git log --pretty=[short/medium/full/fuller/reference/raw]
+$git log --pretty="%C(yellow) hash: %h %C(blue)Date: %ad %C(red) Message: %s" --date=human
+
+#  will print out the history of your commits, showing where your branch pointers are
+#  and how your history has diverged
+git log --oneline --decorate --graph --all
+
+#  Common options to git log
+Option Description
+-p				Show the patch introduced with each commit.
+--stat			Show statistics for files modified in each commit.
+--shortstat		Display only the changed/insertions/deletions line from the --stat command.
+--name-only		Show the list of files modified after the commit information.
+--name-status	Show the list of files affected with added/modified/deleted information as well.
+--abbrev-commit	Show only the first few characters of the SHA-1 checksum instead of all 40.
+--relative-date	Display the date in a relative format (for example, "2 weeks ago") instead of using the full date format.
+--graph			Display an ASCII graph of the branch and merge history beside the log output.
+--pretty		Show commits in an alternate format. Option values include oneline, short,
+				full, fuller, and format (where you specify your own format).
+--oneline		Shorthand for --pretty=oneline --abbrev-commit used together.
+
+#  Options to limit the output of git log
+Option Description
+
+-<n>				Show only the last n commits
+--since, --after	Limit the commits to those made after the specified date.
+--until, --before	Limit the commits to those made before the specified date.
+--author	 		Only show commits in which the author entry matches the specified string.
+--committer			Only show commits in which the committer entry matches the specified string.
+--grep				Only show commits with a commit message containing the string
+-S					Only show commits adding or removing code matching the string
+
+# --------------------------------- show ------------------------------------- #
+# To see more detail about a particular commit, use git show with a commit number:
+$ git show 9da581d910c9c4ac93557ca4859e767f5caf5169
+
+# Provides concise, one-line summaries for the current development branch:
+git show-branch
+$ git show-branch --more=10
+
+# You may want to explore those differences with commands such as:
+$ ls -lsa public_html my_website
+$ diff -r public_html my_website
+
+#  create a new branch and want to switch to that new branch at the
+#  same time this can be done in one operation with
+$git checkout -b <newbranchname>.
+
+#  Switch to an existing branch:
+git switch testing-branch.
+
+#  Create a new branch and switch to it:
+git switch -c new-branch.
+The -c flag stands for create, you can also use the full flag: --create.
+#  Return to your previously checked out branch:
+$git switch -
+
+# --------------------------------- Branches --------------------------------- #
+
+# View all branches. * is current
+git branch --list
+# View remotes
+git branch -r
+# View all (local and remote)
+git branch -a
+# Create a new branch pointing to where we are called branch1
+git branch branch1
+
+#  Delete the branch on the local repository
+git branch --delete future-plan
+
+#  Delete the branch on the (local) remote branch
+git branch --remotes --delete origin/future-plan
+
+#  Delete the branch on the remote repository (Server) (Github/Gitlab)
+git push origin --delete future-plan
+
+#Remember to ALWAYS check it has been merged first before deleting
+git branch --merged
+git branch -d branch1
+# ------------------------------ Check on Objects ---------------------------- #
+
+# look at the type
+git cat-file -t <first 7 of the hash shown for the commit>
+# look at the content
+git cat-file -p <first 7 of the hash shown for the commit>
+
+# look at the type
+git cat-file -t <first 5 (to show just needs to be unique) of the hash shown for the tree in commit file>
+# look at the content. Notice here it points the blob we saw created before and now has a file name
+git cat-file -p <first 5 of the hash shown for the tree in commit file>
+
+# look at the type
+git cat-file -t <first n of the hash shown for the blob in tree file>
+# look at the content. Notice here it points the blob we saw created before and now has a file name
+
+git cat-file -p <first 5 of the hash shown for the blob in tree file>
+
+# --------------------------------- Tags ------------------------------------- #
+
+#Remember use tags if you want some long lived reference
+# I can create a tag at the current location
+git tag v1.0
+
+# I can create a tag at the any previous location
+git tag v0.9.1 <previous commit>
+
+# lets look at a commit that is tagged. Show gives information about an object.
+# For a commit the log message and diff
+git show v1.0.0
+
+# we see the TAG information AND then the commit it references
+git cat-file -t v0.0.1
+git cat-file -t v1.0.0
+
+# Note tags have to be pushed to a remote origin for them to be visible there.
+git push --tag
+
+# ----------------------------pull/fetch-------------------------------------- #
+
+# Pull down remote changes
+git pull
+
+# To pull a branch from a remote.make sure you are currently on the branch you
+# want to merge into
+git pull <remote_name> <remote_branch_name>:<local_branch_name>
+git pull origin BranchA:BranchB
+
+# Can specify where to pull from and branch
+git pull origin main
+# Pull from all remotes
+git pull --all
+# It pulled down the changes and MERGED with a fast-forward. Remember that
+
+# Alternativaly, you can use the commande 'git fetch' to fetch the remote branch
+# first, and then use 'git merge' to merge the changes into your local branch
+git fetch
+# can be explicit
+git fetch <remote_name> <remote_branch_name>
+git fetch origin main
+
+git merge <remote_name>/<remote_branch_name> <local_branch_name>
+git merge origin/branchA branchB
+git merge # fast forward again
+
+# to undo a conflict and start over
+git merge --abort
+git rebase --abort
+
+# -------------------------------push ---------------------------------------- #
+
+# To push a branch to a remote.
+git push <remote_name> <local_branch_name>:<remote_branch_name>
+
+# make sure you have already configured your remote by using
+git remote add <remote_name> <remote_url>
+
+# To push and set upstream for the first time, a remote brach will be created
+git push -u <remote repo, e.g. origin> <branch name>
+
+# To delete a remote branch
+
+git push <remote-name> --delete <old-branch>
+
+# ---------------------------- Reset Vs Restore ------------------------------ #
+
+In Git, the git reset and git restore commands are used to undo changes,
+but they work in slightly different ways.
+
+git reset is used to unstage changes and move the current branch pointer to a
+previous commit. It allows you to remove commits from the current branch and
+reset the branch to a previous state. It has three options:
+
+--soft: it resets the branch pointer to a previous commit and keeps the changes
+		in the working directory.
+--mixed: it is the default option. It resets the branch pointer to a previous
+		commit and stages the changes, but keeps the changes in the working
+		directory.
+--hard: it resets the branch pointer to a previous commit, stages the changes,
+		and discards the changes in the working directory.
+
+git restore is a command that allows you to undo changes that have been made
+to the working directory. It is similar to git checkout, but has more options.
+With git restore, you can:
+
+restore a specific file
+restore a file to a specific version
+restore a file to the version that was last committed
+restore a file to a version that was committed at a specific time.
+In general, git reset is used to undo commits, while git restore is used to undo
+changes to the working directory.
+
+Keep in mind that git reset is a powerful command that can permanently delete
+commits, so use it with caution.
+Be sure to have a good understanding of the command before using it in a
+production environment.
+
+# ------------------------------- Rebase ------------------------------------- #
+
+# Notice: Do not use rebase on commits on that you've already pushed/shared on 
+# a remote repository! instead use it for cleaning up your local commit history
+# before merging it into a shared team branch

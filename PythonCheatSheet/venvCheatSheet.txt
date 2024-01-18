@@ -1,0 +1,77 @@
+# Python venv virtual environment cheat sheet
+
+# Create a venv
+# To create a virtual environment, go to the root of your project and run
+
+python -m venv venv
+
+It will create a virtual environment called venv
+
+Activate venv
+.\venv\Scripts\activate
+
+Intall packages
+pip install pandas pyodbc
+
+Create requirements.txt
+pip freeze > requirements.txt
+
+Install packages from requirements.txt
+pip install -r requirements.txt
+
+
+in Linux
+
+When you create a virtual environment using `python -m venv env` or `python3 -m venv env`, the `venv` module also installs a copy of `pip` within the virtual environment. Therefore, once the virtual environment is activated, the `pip` command will be available and associated with the Python version of that virtual environment.
+
+Here are the general steps:
+
+1. **Create a Virtual Environment:**
+
+   ```bash
+   python3 -m venv env
+   ```
+
+2. **Activate the Virtual Environment:**
+
+   - On Linux/macOS:
+
+     ```bash
+     source env/bin/activate
+     ```
+
+   - On Windows:
+
+     ```bash
+     .\env\Scripts\activate
+     ```
+
+3. **Check `pip` Version:**
+
+   Once the virtual environment is activated, you can check the version of `pip`:
+
+   ```bash
+   pip --version
+   ```
+
+   This `pip` command is specific to the virtual environment and is separate from the system-wide `pip` installation.
+
+4. **Install Packages:**
+
+   You can use the `pip` command within the activated virtual environment to install packages:
+
+   ```bash
+   pip install package_name
+   ```
+
+5. **Deactivate the Virtual Environment:**
+
+   When you're done working in the virtual environment, you can deactivate it:
+
+   ```bash
+   deactivate
+   ```
+
+The idea behind virtual environments is to create isolated environments for each project, and part of this isolation is having a dedicated `pip` for that environment. This ensures that the dependencies for each project are separate and don't interfere with each other.
+
+Therefore, you don't need to install `pip` separately within each virtual environment; it's automatically included when you create the virtual environment using the `venv` module.

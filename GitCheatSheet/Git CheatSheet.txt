@@ -1,3 +1,5 @@
+# For advanced Tips : https://realpython.com/advanced-git-for-pythonistas/
+
 # This is a Cheat sheet for some commande
 
 # The most commonly used git commands are:
@@ -363,3 +365,42 @@ production environment.
 # Notice: Do not use rebase on commits on that you've already pushed/shared on 
 # a remote repository! instead use it for cleaning up your local commit history
 # before merging it into a shared team branch
+
+
+#-----------------------
+# Adding specefics hunks to index
+git add --patch <file>
+
+
+
+# ---------------
+
+ it recommends using a personal access token or SSH keys for authentication.
+
+Here's how you can resolve this issue:
+
+Using a Personal Access Token:
+Generate a Personal Access Token:
+
+Go to your GitHub account settings.
+Navigate to "Developer settings" > "Personal access tokens."
+Click on "Generate token" and follow the instructions to create a new token. Make sure to select the necessary scopes based on your needs.
+Clone the Repository:
+
+Instead of using your password, use the personal access token as the password when prompted during the clone operation:
+bash
+Copy code
+git clone https://username:token@github.com/fa5fou5/100-Days-of-Python.git
+Replace username with your GitHub username and token with the personal access token you generated.
+Using SSH:
+Set Up SSH Keys:
+
+If you prefer, you can set up SSH keys for authentication.
+Follow the instructions in GitHub's documentation to generate and add an SSH key.
+Clone the Repository using SSH:
+
+Clone the repository using the SSH URL:
+bash
+Copy code
+git clone git@github.com:fa5fou5/100-Days-of-Python.git
+Choose the method that suits your preferences (Personal Access Token or SSH), and it should resolve the authentication issue when cloning repositories. Remember that using SSH keys is generally considered more secure and is the recommended method for interacting with GitHub repositories.

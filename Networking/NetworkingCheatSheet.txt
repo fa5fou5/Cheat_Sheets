@@ -1,0 +1,6 @@
+ping google.ca
+test-connection webcon.com
+# to get the members 
+test-connection webcon.com | Get-Member
+# Get the IP address
+(test-connection webcon.com -count 1).IPV4Address.IPAddressToString

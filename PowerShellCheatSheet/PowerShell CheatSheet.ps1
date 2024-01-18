@@ -9,3 +9,4 @@ explorer .
 start .
 alias open="explorer.exe"
 open .
+

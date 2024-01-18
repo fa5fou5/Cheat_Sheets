@@ -1,0 +1,8 @@
+# To shut down kali properly
+
+$ init 0
+or
+$ shutdown -h now
+
+# restart ssh
+systemctl restart ssh

@@ -1,3 +1,4 @@
+# Reference: https://realpython.com/intro-to-pyenv/
 Pyenv Command Reference:
 # https://github.com/pyenv/pyenv/blob/master/COMMANDS.md
 
@@ -43,3 +44,32 @@ pyenv uninstall
 
 # Displays the full path to the executable that pyenv will invoke when you run the given command. E.g. pyenv which python3.
 pyenv which <command>
+
+pip list # list of installed packages
+python -m venv <env_name> # Create a vitual environment
+
+# to activate the environment
+<env_name>/Script/activate
+
+# to deactivate the envionment
+deactivate
+
+#List where python is intalled
+
+#pyenv <command> [<args>]
+    commands     List all available pyenv commands
+    duplicate    Creates a duplicate python environment
+    local        Set or show the local application-specific Python version
+    global       Set or show the global Python version
+    shell        Set or show the shell-specific Python version
+    install      Install a Python version using python-build
+    uninstall    Uninstall a specific Python version
+    update       Update the cached version DB
+    rehash       Rehash pyenv shims (run this after installing executables)
+    vname        Show the current Python version
+    version      Show the current Python version and its origin
+    version-name Show the current Python version
+    versions     List all Python versions available to pyenv
+    exec         Runs an executable by first preparing PATH so that the selected Python
+    which        Display the full path to an executable
+    whence       List all Python versions that contain the given executable
